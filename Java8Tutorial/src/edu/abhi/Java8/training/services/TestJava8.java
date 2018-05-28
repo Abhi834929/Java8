@@ -8,6 +8,7 @@ import edu.abhi.Java8.training.function.MySupplier;
 public class TestJava8 {
 
 	public static void main(String[] args) {
+		
 		BookService service = new BookService();
 		List<Book> bookList = service.getAllBooks();
 
@@ -20,6 +21,14 @@ public class TestJava8 {
 		bookList.forEach((e) -> {
 			System.out.println(e);
 		});
+		System.out.println("++++++++++++++++++++JAVA 8 Method Reference+++++++++++++++++");
+		//Method Reference
+		bookList.forEach(
+			System.out::println
+		);
+		bookList.forEach(
+				System.err::println
+			);
 
 		MySupplier supplier = (bookNum, bookName, price, publisher) -> {
 			return new Book(bookNum, bookName, price, publisher);
