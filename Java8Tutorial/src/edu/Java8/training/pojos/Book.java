@@ -1,6 +1,6 @@
 package edu.Java8.training.pojos;
 
-public class Book {
+public class Book  {
 	
 	private long bookNumber;
 	private String  bookName;
