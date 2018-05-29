@@ -13,16 +13,19 @@ public class FileHandlingWithStreams {
 		try (Stream<String> dataStream = Files
 				.lines(Paths.get("C:\\Users\\Administrator\\workspace\\java8\\Java8Tutorial\\src\\dataFile"));) {
 			System.out.println("++++++++++++++Print unique containts in File+++++++++++++++");
-			List<String> fileContant = dataStream.flatMap(line -> Arrays.stream(line.split("\n")))
+			List<String> containts = dataStream.flatMap(line -> Arrays.stream(line.split("\n")))
 					.distinct().collect(Collectors.toList());
-			fileContant.forEach(System.err::println);
+			containts.forEach(System.err::println);
 			System.out.println("++++++++++++++Print count of unique containts in File+++++++++++++++");
 			
-			Long count = fileContant.stream().flatMap(line -> Arrays.stream(line.split("\n"))).distinct()
+			Long count = containts.stream().flatMap(line -> Arrays.stream(line.split("\n"))).distinct()
 					.count();
-			System.out.println(count);
+			System.out.println("List<String> containts:-"+count);
+			Long count1 = dataStream.flatMap(line -> Arrays.stream(line.split("\n"))).distinct()
+					.count();
+			System.out.println("From dataStream:-"+count1);
 		} catch (Exception e) {
-
+			
 		}
 	}
 }
