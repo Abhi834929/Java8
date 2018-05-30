@@ -25,7 +25,7 @@ public class FileHandlingWithStreams {
 					.count();
 			System.out.println("From dataStream:-"+count1);
 		} catch (Exception e) {
-			
-		}
+			System.err.println(e.getMessage());
+		}	
 	}
 }
