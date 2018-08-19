@@ -1,0 +1,74 @@
+collection properties	List	Vector	ArrayList	LinkedList	Set		HashSet		LinkedHashSet	TreeSet		Queue
+=====================	====	======	=========	==========	===		=======		=============	=======		=====
+1) duplicate		yes	yes	yes		yes		No		No		No		No		depends
+2) ordered		yes	yes	yes		yes		depends		Unordered	yes		Yes		depends
+3) null values		yes	yes	yes		yes		0 or 1		atmost 1	atmost 1	No		depends
+4) sorted		none	no	no		no		some		no		no		Yes		depends
+5) synchronized		some	yes	no		no		none		no		no		No		None
+-----------------------------------------------------------------
+ordered
+=======
+4 1 3 2 5
+4 1 3 2 5
+4 1 3 2 5
+4 1 3 2 5
+...
+
+unordered
+=========
+4 1 3 2 5
+2 1 3 5 4
+1 3 2 5 4
+...
+
+The order of Set elements depends impl classes:
+Set hs = new HashSet(); //unordered
+Set lhs= new LinkedHashSet(); //preserves insertion order
+Set ts = new TreeSet(); //sorting order
+
+The HashSet internally uses hashing mech.
+The LinkedHashSet internally uses both hashing + list mechanisms.
+The TreeSet internally uses sorting mech.
+
+Since HashSet internally uses hashing mech hence we have to override hashCode().
+Since HashSet is a subclass of Set interface, which never allows duplicate elements, hence we have to override equals() method to eliminate duplicateness.
+conclude: In case of HashSet we have to override both hashCode() & equals() methods.
+
+Since LinkedHashSet internally uses hashing mech hence we have to override hashCode().
+Since LinedHashSet is a subclass of Set interface, which never allows duplicate elements, hence we have to override equals() method to eliminate duplicateness.
+conclude: In case of LinkHashSet we have to override both hashCode() & equals() methods.
+
+Since TreeSet uses sorting mech but not hashing mech hence overriding hashCode() method is not req.
+
+				sorting
+				=======
+Natural Sorting Order(NSO)			Customized Sorting Order(CSO)
+	using						using
+java.lang.Comparable<<interface>>		java.util.Comparator<<interface>>
+	contains					contains
+public int compareTo(Object)			public int compare(Object, Object)
+				
+				-ve   means o1<o2
+				+ve   means o1>o2	
+				zero  means o1==o2 duplicate
+The return value of compareTo()/compare() methods eliminate duplicateness hence overrding equals() method is not req.
+conclusion: Incase of TreeSet, overriding both hashCode() and equals() methods are not req.
+
+
+				
+
+1) <? extends generic-type>
+	- In case of extends the 'generic-type' is either same or subtype
+	- Polymorphim w.r.t read operation is possible.
+	- Polymorphim w.r.t add operation is not possible.
+
+2) <? super generic-type>
+	- In case of super the 'generic-type' is either same or supertype
+	- Polymorphim w.r.t read operation is possible.
+	- Polymorphim w.r.t add operation is possible.
+
+Object		Object
+
+Animal		Animal
+ 
+Dog		Cat

@@ -1,0 +1,181 @@
+array
+=====
+Employee[] emps = new Employees[5];
+emps[0] = new Employee(); //Ok
+emps[1] = new Student(); //C.E   Incompatible types.  Found: Student, Required: Employee
+emps[2] = "aspire";      //C.E  Incompatible types.  Found: String, Required: Employee
+Conclusion: Arrays are type-safe.
+
+collection
+==========
+ArrayList emps = new ArrayList();
+emps.add(new Employee()); //Ok
+emps.add(new Student()); //Ok
+emps.add("aspire"); //Ok
+conclusion: Collections are non type-safe.
+
+Generic types (jdk1.5)
+======================
+The purpose of generic type is to convert non typ-safe collection into type-safe collection.
+ArrayList<Employee> emps = new ArrayList<Employee>();
+emps.add(new Employee()); //Ok
+emps.add(new Student()); //C.E   Incompatible types.  Found: Student, Required: Employee
+emps.add("aspire"); //C.E  Incompatible types.  Found: String, Required: Employee
+conclusion: After generic types, the collection is type-safe.
+
+Polymorphism w.r.t arrays
+=========================
+Arrays are polymorphic because arrays are protected at runtime.
+Example:
+class Animal{}
+class Dog extends Animal{}
+class Cat extends Animal{}
+
+class Test{
+	public static void addAnimal(Animal[] animals){ 
+		animals[1] = new Dog(); //ok
+		animals[2] = new Cat(); //The code is compiled but throws ArrayStoreException
+		
+
+		/*
+		animals[1] = new Cat(); //ok
+		animals[2] = new Dog(); //throws ArrayStoreException	
+		*/				
+
+		/*
+		animals[1] = new Dog(); //ok
+		animals[2] = new Cat(); //ok
+		*/
+	}
+
+	public static void main(String[] args){
+		Dog[] dogs = new Dog[3];		
+		dogs[0] = new Dog(); //Ok
+		dogs[1] = new Cat(); //C.E since arrays are protected at compile time
+		addAnimal(dogs); //Ok
+
+		Cat[] cats = new Cat[3];
+		cats[0] = new Cat(); //Ok
+		cats[1] = new Dog(); //C.E since arrays are protected at compile time
+		addAnimal(cats); //Ok
+
+		Animal[] animals = new Animal[3];
+		animals[0] = new Dog(); //Ok
+		animals[1] = new Cat(); //Ok
+		addAnimal(animals); //Ok
+	}
+}
+
+Polymorphism w.r.t Generic types
+================================
+By default generic types are non-polymorphic because generic type information is unavailable at runtime i.e., generic types are not protected at runtime.
+Example:
+class Animal{}
+class Dog extends Animal{}
+class Cat extends Animal{}
+
+class Test{
+	public static void addAnimal(List<Animal> animals){ //List<Animal> animals = new ArrayList<Dog>(); //compilation error
+		animals.add(new Dog()); //ok
+		animals.add(new Cat()); //Ok
+	}
+
+	public static void main(String[] args){
+		List<Dog> dogs = new ArrayList<Dog>();
+		dogs.add(new Dog()); //Ok
+		dogs.add(new Cat()); //C.E since generic types are protected at compile time
+		addAnimal(dogs); //compilation error
+
+		List<Cat> cats = new ArrayList<Cat>();
+		cats.add(new Cat()); //Ok
+		cats.add(new Dog()); //C.E since generic types are protected at compile time
+		addAnimal(cats); //compilation error
+
+		List<Animal> animals = new ArrayList<Animal>();
+		animals[0] = new Dog(); //Ok
+		animals[1] = new Cat(); //Ok
+		addAnimal(animals); //Ok
+	}
+}
+
+List<Animal> animals = new ArrayList<Dog>(); //wrong
+List<Animal> animals = new ArrayList<Cat>(); //wrong
+List<Animal> animals = new ArrayList<Animal>(); //correct
+Conclusion: Generic types are non polymorphic.
+
+<? extends generic-type>
+=========================
+Allows only read but not write operation.
+Example:
+class class Animal{}
+class Dog extends Animal{}
+class Cat extends Animal{}
+
+class Test{
+	public static void readAnimal(List<? extends Animal> animals){ //List<Animal> animals = new ArrayList<Dog>();  //ok
+		sop(animals.get(0)); //ok
+		sop(animals.get(1)); //ok
+		//animals.add(new Dog()); //compilation error
+		//animals.add(new Cat()); //compilation error
+	}
+
+	public static void main(String[] args){
+		List<Dog> dogs = new ArrayList<Dog>();
+		dogs.add(new Dog()); //Ok
+		dogs.add(new Cat()); //C.E since generic types are protected at compile time
+		readAnimal(dogs); //Ok
+
+		List<Cat> cats = new ArrayList<Cat>();
+		cats.add(new Cat()); //Ok
+		cats.add(new Dog()); //C.E since generic types are protected at compile time
+		readAnimal(cats); //ok
+
+		List<Animal> animals = new ArrayList<Animal>();
+		animals[0] = new Dog(); //Ok
+		animals[1] = new Cat(); //Ok
+		readAnimal(animals); //Ok
+	}
+}
+conclusion: Generic types are polymorphic to perform read operation but not for add opertation.
+
+<? super generic-type>
+======================
+Allows both read and write operations.
+Example:
+class class Animal{}
+class Dog extends Animal{}
+class Cat extends Animal{}
+
+class Test{
+	public static void addDog(List<? super Dog> animals){ //allows ArrayList<Dog>, ArrayList<Animal>, ArrayList<Object> but not ArrayList<Cat>
+			
+	}
+
+	public static void addCat(List<? super Cat> animals){ //allows ArrayList<Cat>, ArrayList<Animal>, ArrayList<Object> but not ArrayList<Dog>
+	
+	}
+
+	public static void addAnimal(List<? super Animal> animals){ //allows ArrayList<Animal>, ArrayList<Object>
+		sop(animals.get(0)); //ok
+		sop(animals.get(1)); //ok
+	}
+
+	public static void main(String[] args){
+		List<Dog> dogs = new ArrayList<Dog>();
+		dogs.add(new Dog()); //Ok
+		dogs.add(new Cat()); //C.E since generic types are protected at compile time
+		readAnimal(dogs); //Ok
+
+		List<Cat> cats = new ArrayList<Cat>();
+		cats.add(new Cat()); //Ok
+		cats.add(new Dog()); //C.E since generic types are protected at compile time
+		readAnimal(cats); //ok
+
+		List<Animal> animals = new ArrayList<Animal>();
+		animals[0] = new Dog(); //Ok
+		animals[1] = new Cat(); //Ok
+		readAnimal(animals); //Ok
+	}
+}
+
+
